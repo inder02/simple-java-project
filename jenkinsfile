@@ -1,0 +1,14 @@
+pipeline{
+agent any
+stages{
+  state("build"){
+    echo"building"
+  }
+  stage("test"){
+    echo"testing"
+  }
+  stage("deploy"){
+    echo"deploying"
+  }
+}
+}
