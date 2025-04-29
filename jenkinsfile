@@ -1,29 +1,35 @@
-pipeline{
+pipeline {
     agent any
+
     tools {
         maven 'maven3'
- }
-        stages{
-            stage("building jar file"){
-                         steps{
-                                echo"building"
-                                sh 'mvn package -DskipTests'
-                              }   
-                          }
-            stage("craeting dockerfile"){
-                         steps{
-                                echo"bdockerfile"
-                                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                                    sh 'docker build -t inde249/test-java:my_app .'
-                                    sh 'echo $PASS | docker login -u $USER --password-stdin'
-                                    sh 'docker push inde249/test-java:my_app'
-                                }
-                              }   
-                          }
-            stage("deploy"){
-                         steps{
-                                echo"deploying"
-                              }   
-                          }
- }
+    }
+
+    stages {
+        stage("Build") {
+            steps {
+                sh 'mvn package -DskipTests'
+            }
+        }
+
+        stage("create and push) {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub', 
+                    usernameVariable: 'USER', 
+                    passwordVariable: 'PASS'
+                )]) {
+                    sh 'docker build -t inde249/test-java:my_app .'
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                    sh 'docker push inde249/test-java:my_app'
+                }
+            }
+        }
+
+        stage("Deploy") {
+            steps {
+                echo "Deploying app"
+            }
+        }
+    }
 }
