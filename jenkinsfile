@@ -14,9 +14,9 @@ pipeline{
                          steps{
                                 echo"bdockerfile"
                                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                                    sh 'docker build -t inde249/test-java:my_app:01 .'
+                                    sh 'docker build -t inde249/test-java:my_app .'
                                     sh 'echo $PASS | docker login -u $USER --password-stdin'
-                                    sh 'docker push inde249/test-java:my_app:01'
+                                    sh 'docker push inde249/test-java:my_app'
                                 }
                               }   
                           }
