@@ -1,20 +1,29 @@
 pipeline{
-agent any
-stages{
-  stage("build"){
-steps{
-     echo"building"
-}   
-  }
-  stage("test"){
-   steps{
-     echo"testing"
-}   
-  }
-  stage("deploy"){
-   steps{
-     echo"deploying"
-}   
-  }
-}
+    agent any
+    tools {
+        mvn 'maven3'
+ }
+        stages{
+            stage("building jar file"){
+                         steps{
+                                echo"building"
+                                sh 'mvn package'
+                              }   
+                          }
+            stage("craeting dockerfile"){
+                         steps{
+                                echo"bdockerfile"
+                                withCredentials([usernamePassword(credentialsId: 'dockerhub' passwordVariable: 'PASS' usernameVariable: 'USER')]){
+                                    sh 'docker build -t inde249/test-java:my_app:01 .'
+                                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                                    sh 'docker push inde249/test-java:my_app:01'
+                                }
+                              }   
+                          }
+            stage("deploy"){
+                         steps{
+                                echo"deploying"
+                              }   
+                          }
+ }
 }
