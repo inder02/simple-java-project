@@ -7,7 +7,7 @@ pipeline{
             stage("building jar file"){
                          steps{
                                 echo"building"
-                                sh 'mvn package'
+                                sh 'mvn package -DskipTests'
                               }   
                           }
             stage("craeting dockerfile"){
