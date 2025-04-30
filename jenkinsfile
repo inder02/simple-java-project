@@ -32,21 +32,26 @@ pipeline {
             }
         }
     }
-post {
+  post {
         success {
-            emailext(
-                subject: "Pipeline Build Success",
-                body: "The build completed successfully and the Docker image was pushed.",
-                to: "inder.23.edu@gmail.com"
-            )
+            // Send an email on success
+            mail to: 'inder.23.edu@gmail.com',  // Change to your email address
+                 subject: "Pipeline Build Success",
+                 body: "The build was successful, and the Docker image was pushed to the registry."
         }
 
         failure {
-            emailext(
-                subject: "Pipeline Build Failure",
-                body: "The build failed. Please check the logs for more details.",
-                to: "inder.23.edu@gmail.com"
-            )
+            // Send an email on failure
+            mail to: 'inder.23.edu@gmail.com',  // Change to your email address
+                 subject: "Pipeline Build Failure",
+                 body: "The build failed. Please check the Jenkins logs for more information."
+        }
+
+        always {
+            // Send an email regardless of the build result (optional)
+            mail to: inder.23.edu@gmail.com,  // Change to your email address
+                 subject: "Pipeline Execution Complete",
+                 body: "The pipeline execution has completed. Check the logs for more details."
         }
     }
 
