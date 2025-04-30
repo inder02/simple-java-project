@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-                sh 'mvn package -DskipTests'
+                sh 'mvn package -DskipTests'  // Build the app
             }
         }
 
@@ -19,44 +19,54 @@ pipeline {
                     usernameVariable: 'USER', 
                     passwordVariable: 'PASS'
                 )]) {
-                    sh 'docker build -t inde249/test-java:my_app .'
-                    sh 'echo $PASS | docker login -u $USER --password-stdin'
-                    sh 'docker push inde249/test-java:my_app'
+                    sh 'docker build -t inde249/test-java:my_app .'  // Build Docker image
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'  // Login to Docker registry
+                    sh 'docker push inde249/test-java:my_app'  // Push the image to Docker Hub
                 }
             }
         }
 
         stage("Deploy") {
             steps {
-                echo "Deploying app"
-            }
-        }
-
-   stage('Email Notification') {
-            steps {
-                script {
-                    // Send an email notification
-                    emailext(
-                        subject: "Build Success/Failure Notification",
-                        body: "The build has completed successfully or failed.",
-                        to: "inder.23.edu@gmail.com"
-                    )
-                }
+                echo "Deploying app"  // Placeholder for deployment logic
             }
         }
     }
 
     post {
         success {
-            // Action to take if the pipeline succeeds
+            script {
+                // Send an email notification on success
+                emailext(
+                    subject: "Build Success Notification",
+                    body: "The build has completed successfully and the Docker image has been pushed.",
+                    to: "inder.23.edu@gmail.com"  // Add recipient email address
+                )
+            }
             echo 'Pipeline executed successfully!'
         }
+
         failure {
-            // Action to take if the pipeline fails
+            script {
+                // Send an email notification on failure
+                emailext(
+                    subject: "Build Failure Notification",
+                    body: "The build has failed. Please check the logs for more details.",
+                    to: "inder.23.edu@gmail.com"  // Add recipient email address
+                )
+            }
             echo 'Pipeline execution failed.'
         }
+
         always {
-            // Action to always take, regardless of success/failure
+            script {
+                // Optional: Send an email every time the pipeline finishes
+                emailext(
+                    subject: "Pipeline Completion Notification",
+                    body: "The pipeline has finished execution. Please check the results.",
+                    to: "inder.23.edu@gmail.com"
+                )
+            }
             echo 'Cleaning up...'
         }
     }
