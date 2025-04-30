@@ -15,6 +15,6 @@ public class WorksWithHerokuServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         writer.print("Buddy Works with Heroku");
         writer.close();
-        system.out.println("hi i am inder")
+        system.out.println("hi i am inder");
     }
 }
