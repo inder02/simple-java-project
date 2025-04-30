@@ -47,7 +47,7 @@ pipeline {
                 mail(
                 to: 'inder.23.edu@gmail.com',  // Recipient email
                 subject: 'Pipeline Build failure',  // Subject of the email
-                body: 'The build was failure.  // Body of the email
+                body: 'The build was failure.'  // Body of the email
             )
         }
 
