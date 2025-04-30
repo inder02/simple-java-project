@@ -35,23 +35,29 @@ pipeline {
   post {
         success {
             // Send an email on success
-            mail to: 'inder.23.edu@gmail.com',  // Corrected: Remove 'to:'
-                 'Pipeline Build Success',  // Subject
-                 'The build was successful, and the Docker image was pushed to the registry.'  // Body
+              mail(
+                to: 'inder.23.edu@gmail.com',  // Recipient email
+                subject: 'Pipeline Build Success',  // Subject of the email
+                body: 'The build was successful, and the Docker image was pushed to the registry.'  // Body of the email
+            )
         }
 
         failure {
             // Send an email on failure
-            mail to: 'inder.23.edu@gmail.com',  // Corrected: Remove 'to:'
-                 'Pipeline Build Failure',  // Subject
-                 'The build failed. Please check the Jenkins logs for more information.'  // Body
+                mail(
+                to: 'inder.23.edu@gmail.com',  // Recipient email
+                subject: 'Pipeline Build failure',  // Subject of the email
+                body: 'The build was failure.  // Body of the email
+            )
         }
 
         always {
             // Send an email regardless of the build result (optional)
-            mail to: 'inder.23.edu@gmail.com',  // Corrected: Remove 'to:'
-                 'Pipeline Execution Complete',  // Subject
-                 'The pipeline execution has completed. Check the logs for more details.'  // Body
+           mail(
+                to: 'inder.23.edu@gmail.com',  // Recipient email
+                subject: 'Pipeline Execution Complete',  // Subject of the email
+                body: 'The pipeline execution has completed. Check the logs for more details.'  // Body of the email
+            )
         }
     }
 
