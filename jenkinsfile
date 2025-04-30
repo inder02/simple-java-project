@@ -31,5 +31,33 @@ pipeline {
                 echo "Deploying app"
             }
         }
+
+   stage('Email Notification') {
+            steps {
+                script {
+                    // Send an email notification
+                    emailext(
+                        subject: "Build Success/Failure Notification",
+                        body: "The build has completed successfully or failed.",
+                        to: "inder.23.edu@gmail.com"
+                    )
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            // Action to take if the pipeline succeeds
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            // Action to take if the pipeline fails
+            echo 'Pipeline execution failed.'
+        }
+        always {
+            // Action to always take, regardless of success/failure
+            echo 'Cleaning up...'
+        }
     }
 }
