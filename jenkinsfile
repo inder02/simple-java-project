@@ -12,7 +12,7 @@ pipeline {
             }
         }
 
-        stage("create and push) {
+        stage("Create and Push") {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub', 
