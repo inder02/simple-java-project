@@ -32,42 +32,23 @@ pipeline {
             }
         }
     }
-
-    post {
+post {
         success {
-            script {
-                // Send an email notification on success
-                emailext(
-                    subject: "Build Success Notification",
-                    body: "The build has completed successfully and the Docker image has been pushed.",
-                    to: "inder.23.edu@gmail.com"  // Add recipient email address
-                )
-            }
-            echo 'Pipeline executed successfully!'
+            emailext(
+                subject: "Pipeline Build Success",
+                body: "The build completed successfully and the Docker image was pushed.",
+                to: "inder.23.edu@gmail.com"
+            )
         }
 
         failure {
-            script {
-                // Send an email notification on failure
-                emailext(
-                    subject: "Build Failure Notification",
-                    body: "The build has failed. Please check the logs for more details.",
-                    to: "inder.23.edu@gmail.com"  // Add recipient email address
-                )
-            }
-            echo 'Pipeline execution failed.'
-        }
-
-        always {
-            script {
-                // Optional: Send an email every time the pipeline finishes
-                emailext(
-                    subject: "Pipeline Completion Notification",
-                    body: "The pipeline has finished execution. Please check the results.",
-                    to: "inder.23.edu@gmail.com"
-                )
-            }
-            echo 'Cleaning up...'
+            emailext(
+                subject: "Pipeline Build Failure",
+                body: "The build failed. Please check the logs for more details.",
+                to: "inder.23.edu@gmail.com"
+            )
         }
     }
-}
+
+    }
+
